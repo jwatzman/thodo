@@ -34,7 +34,11 @@ base64pad str =
 		if padlen == n then str else str ++ (replicate padlen '=')
 
 splitCookie :: String -> (String, String)
-splitCookie cookie = (\(x,y) -> (x, drop 1 y)) (break ((==) '.') cookie)
+splitCookie cookie =
+	let
+		(l, r) = break ((==) '.') cookie
+	in
+		(l, drop 1 r)
 
 decodeB64 :: (Monad m) => String -> m [Word8]
 decodeB64 encoded =
