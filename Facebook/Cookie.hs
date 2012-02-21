@@ -4,12 +4,13 @@ module Facebook.Cookie(fbidFromCookie) where
 
 import qualified Codec.Binary.Base64Url as B64
 import qualified Data.ByteString.Internal as BS
+import Data.Word (Word8)
 import Data.Generics (Data)
 import Data.Typeable (Typeable)
 import qualified Text.JSON as JSON
 import qualified Text.JSON.Generic as JSONG
 import qualified Text.JSON.String as JSONS
-import System.IO.Unsafe (unsafePerformIO)
+--import System.IO.Unsafe (unsafePerformIO)
 
 import Facebook.FBID
 
@@ -29,6 +30,11 @@ base64pad str =
 splitCookie :: String -> (String, String)
 splitCookie cookie = (\(x,y) -> (x, drop 1 y)) (break ((==) '.') cookie)
 
+decodeB64 :: (Monad m) => String -> m [Word8]
+decodeB64 encoded = case B64.decode $ base64pad encoded of
+	Just l -> return l
+	Nothing -> fail "Failed to deocde base64"
+
 decodeFBJson :: (Monad m) => String -> m FBJson
 decodeFBJson json =
 	case JSONS.runGetJSON JSONS.readJSValue json of
@@ -37,15 +43,20 @@ decodeFBJson json =
 			JSON.Error s -> fail s
 			JSON.Ok x -> return x
 
-fbidFromCookie :: String -> Maybe FBID
+safeRead :: (Read r, Monad m) => String -> m r
+safeRead s = case reads s of
+	[(v, "")] -> return v
+	_ -> fail $ "Invalid read of " ++ s
+
+fbidFromCookie :: (Monad m) => String -> m FBID
 fbidFromCookie cookie = do
 	let (signatureEncoded, jsonEncoded) = splitCookie cookie
-	signature <- B64.decode $ base64pad signatureEncoded
-	json <- B64.decode $ base64pad jsonEncoded
-	() <- return $ unsafePerformIO $ print "got json"
-	() <- return $ unsafePerformIO $ print $ map BS.w2c json
-	foo <- decodeFBJson $ map BS.w2c json
-	() <- return $ unsafePerformIO $ print "decoded json"
-	() <- return $ unsafePerformIO $ print foo
-	Nothing
-
+	signature <- decodeB64 signatureEncoded
+	json <- decodeB64 jsonEncoded
+	fbjson <- decodeFBJson $ map BS.w2c json
+	if algorithm fbjson == "HMAC-SHA256" then
+		return ()
+	else
+		fail $ "Invalid algorithm " ++ algorithm fbjson
+	-- todo: verify signature
+	safeRead $ user_id fbjson
