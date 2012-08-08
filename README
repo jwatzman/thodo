@@ -3,3 +3,10 @@ https://www.facebook.com/note.php?note_id=10150529217696995 but the gist
 was that I think the features of Haskell are really what I want for writing
 web apps, even if I like SML better as a language. This pretty simple
 to-do list is my attempt to see if that is actually the case.
+
+
+Required packages via cabal-install:
+Crypto
+dataenc
+happstack
+json
