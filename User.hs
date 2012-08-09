@@ -1,6 +1,6 @@
 module User(load, uid) where
 
-import qualified Happstack.Server as S
+import qualified Happstack.Lite as S
 
 import qualified Facebook.Config
 import qualified Facebook.Cookie
@@ -8,7 +8,7 @@ import Facebook.FBID
 
 type User = FBID
 
-load :: S.ServerPartT IO User
+load :: S.ServerPart User
 load = do
 	let cookiename = "fbsr_" ++ (show Facebook.Config.appid)
 	cookie <- S.lookCookieValue cookiename
