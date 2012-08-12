@@ -10,4 +10,4 @@ render :: S.ServerPart S.Response
 render = do
 	user <- User.load
 	S.ok $ S.toResponse $
-		Template.Page.render "Home" $ H.toHtml $ show $ User.uid user
+		Template.Page.render "Home" $ return $ H.toHtml $ show $ User.uid user

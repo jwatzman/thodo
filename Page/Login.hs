@@ -9,5 +9,4 @@ import qualified Template.Page
 
 render :: S.ServerPart S.Response
 render = S.ok $ S.toResponse $
-	Template.Page.render "Log In" $
-		Template.Login.render Facebook.Config.appid
+	Template.Page.render "Log In" Template.Login.render

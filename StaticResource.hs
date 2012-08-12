@@ -1,4 +1,4 @@
-module StaticResource(addCss, addJs, runSR) where
+module StaticResource(addCss, addJs, runSR, StaticResource) where
 
 import Control.Monad.State
 
