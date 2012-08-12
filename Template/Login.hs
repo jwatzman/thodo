@@ -24,7 +24,7 @@ connectjs =
 render :: SR.StaticResource H.Html
 render = do
 	SR.addJs "http://connect.facebook.net/en_US/all.js"
-	return $ H.div $ do
+	return $ do
 		H.div ! A.id "fb-root" $ ""
 		loginbutton
 		H.script ! H.customAttribute "language" "javascript" ! H.customAttribute "type" "text/javascript" $ do
