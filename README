@@ -6,9 +6,11 @@ to-do list is my attempt to see if that is actually the case.
 
 
 Required packages via cabal-install:
+acid-state
 blaze-html
 Crypto
 dataenc
 happstack
 happstack-lite
+ixset
 json
