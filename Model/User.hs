@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable, GeneralizedNewtypeDeriving #-}
 
-module User(User, load, uid) where
+module Model.User(User, load, uid) where
 
 import Data.Data (Data, Typeable)
 import qualified Data.SafeCopy as SC

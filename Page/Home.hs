@@ -4,10 +4,10 @@ import qualified Happstack.Lite as S
 import qualified Text.Blaze.Html5 as H
 
 import qualified Template.Page
-import qualified User
+import qualified Model.User as U
 
 render :: S.ServerPart S.Response
 render = do
-	user <- User.load
+	user <- U.load
 	S.ok $ S.toResponse $
-		Template.Page.render "Home" $ return $ H.toHtml $ show $ User.uid user
+		Template.Page.render "Home" $ return $ H.toHtml $ show $ U.uid user
