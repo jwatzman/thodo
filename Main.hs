@@ -10,7 +10,11 @@ import qualified Page.Login
 dispatch :: S.ServerPart S.Response
 dispatch =
 	msum [
-		Page.Home.render,
+		S.nullDir >> Page.Home.render,
+		S.dir "static" $ msum [
+			S.serveDirectory S.DisableBrowsing [] "./static",
+			S.notFound $ S.toResponse "Sorry."
+		],
 		Page.Login.render
 	]
 

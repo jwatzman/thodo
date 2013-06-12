@@ -1,2 +1,4 @@
-Facebook/Config.hs
 *.swp
+Facebook/Config.hs
+state/
+static/javelin*.js

@@ -1,0 +1,3 @@
+[submodule "javelin"]
+	path = javelin
+	url = git://github.com/facebook/javelin.git
